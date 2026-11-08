@@ -1,0 +1,18 @@
+# 每次网站更新（推送到 main），自动发布到 Firebase Hosting：
+# https://learning-based-on-game.web.app （学校网络挡 github.io 时用这个网址）
+name: Deploy to Firebase Hosting
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: learning-based-on-game
+          channelId: live
