@@ -1,0 +1,27 @@
+# 英文单词网站单独发布到自己的 Firebase 项目（english-words-60017），有自己的每天流量额度：
+# https://english-words-60017.web.app
+name: Deploy English site to Firebase
+on:
+  push:
+    branches: [main]
+    paths: ['english/**', '.github/workflows/firebase-english.yml']
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 准备英文网站文件
+        run: |
+          mkdir _en && cp -r english/. _en/
+          cat > _en/firebase.json <<'EOF'
+          {"hosting":{"public":".","ignore":["firebase.json","**/.*"],
+           "headers":[{"source":"**/*.html","headers":[{"key":"Cache-Control","value":"no-cache"}]}]}}
+          EOF
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: english-words-60017
+          channelId: live
+          entryPoint: _en
