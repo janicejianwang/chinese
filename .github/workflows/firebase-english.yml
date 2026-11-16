@@ -16,7 +16,7 @@ jobs:
           mkdir _en && cp -r english/. _en/
           cat > _en/firebase.json <<'EOF'
           {"hosting":{"public":".","ignore":["firebase.json","**/.*"],
-           "headers":[{"source":"**/*.html","headers":[{"key":"Cache-Control","value":"no-cache"}]}]}}
+           "headers":[{"source":"**/*.html","headers":[{"key":"Cache-Control","value":"no-cache"}]},{"regex":"^(/.*)?/$","headers":[{"key":"Cache-Control","value":"no-cache"}]}]}}
           EOF
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
