@@ -12,15 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: auth
+        continue-on-error: true
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          token_format: access_token
+      - uses: google-github-actions/setup-gcloud@v2
+        continue-on-error: true
       - name: 删掉旧版本（只留正在用的那一个）
         continue-on-error: true
-        env:
-          T: ${{ steps.auth.outputs.access_token }}
         run: |
+          T=$(gcloud auth print-access-token)
           S=https://firebasehosting.googleapis.com/v1beta1/sites/learning-based-on-game
           H="Authorization: Bearer $T"
           CUR=$(curl -s -H "$H" "$S/channels/live" | jq -r '.release.version.name // empty')
