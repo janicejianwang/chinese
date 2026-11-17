@@ -6,7 +6,8 @@
       ".firebaserc",
       "**/.*",
       "**/node_modules/**",
-      "README.md"
+      "README.md",
+      "english/**"
     ],
     "headers": [
       {
@@ -35,6 +36,13 @@
             "value": "no-store"
           }
         ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/english{,/**}",
+        "destination": "https://english-words-60017.web.app",
+        "type": 302
       }
     ]
   }
